@@ -5,6 +5,7 @@ var mongoose = require('mongoose'),
   order = mongoose.model('order'),
   customer = mongoose.model('restaurantuser');
   bookings = mongoose.model('booking');
+  Admin = mongoose.model('Admin');
   // HandymanHandlers = require('../controllers/HandymanController.js'),
   // WorkRequestHandlers = require('../controllers/WorkRequestController.js');
   const accountSid = 'ACdb6a9dd060e90a94b29ab1aa7d841ba6';
@@ -12,18 +13,99 @@ var mongoose = require('mongoose'),
   const client = require('twilio')(accountSid, authToken);
 
 
+  exports.admin_login = function(req, res) {
+    //console.log(req.body.username);
+    Admin.findOne({
+    username: req.body.username,
+    password: req.body.password
+
+  }, function(err, admin) {
+      if (err)  throw err;
+      if (!admin) {
+      res.status(401).json({ message: 'Authentication failed. Admin not found.', status: '401' });
+    } else if (admin) {
+      console.log("done");
+      return res.json({message: 'Authentication successful, Admin logged in', status: '200' });
+
+    }
+  });
+};
 
 
 
-exports.display = function(req,res){
+
+
+exports.display_customer = function(req,res){
   customer.find({},function(err,task){
     if(res)
-      res.json(task)
+      res.json(task);
     else {
-      console.log(err)
+      console.log(err);
     }
 
   });
+}
+
+exports.display_order = function(req,res){
+  order.find({},function(err,task){
+    if(res)
+      res.json(task);
+    else {
+      console.log(err);
+    }
+
+  });
+}
+
+exports.display_booking = function(req,res){
+  bookings.find({},function(err,task){
+    if(res)
+      res.json(task);
+    else {
+      console.log(err);
+    }
+
+  });
+}
+
+
+exports.edit_customer = function(req,res){
+  //var newEntry = new customer(req.body);
+  customer.findOneAndUpdate({customerNo:req.body.customerNo}, {$set:req.body}, {upsert: true},function(err,task){
+    if(task)
+      res.json(task);
+    else {
+      console.log(err);
+    }
+
+
+      });
+}
+
+exports.edit_order = function(req,res){
+  //var newEntry = new order(req.body);
+  customer.findOneAndUpdate({customerNo:req.body.customerNo}, {$set:req.body}, {upsert: true},function(err,task){
+    if(task)
+      res.json(task);
+    else {
+      console.log(err);
+    }
+
+
+      });
+}
+
+exports.edit_booking = function(req,res){
+  //var newEntry = new booking(req.body);
+  customer.findOneAndUpdate({customerNo:req.body.customerNo}, {$set:req.body}, {upsert: true},function(err,task){
+    if(task)
+      res.json(task);
+    else {
+      console.log(err);
+    }
+
+
+      });
 }
 
 exports.save = function(req,res){
@@ -285,6 +367,7 @@ var d = date[1].trim().split(".");
                     newbooking.MenuPreOrdered = res.MenuPreOrdered
                     newbooking.Friends = res.Friends
                     newbooking.Alerted = res.Alerted
+                    //newbooking._id = res._id
 
                     newbooking.save(function(err,task){
                       if(err)
@@ -351,14 +434,14 @@ else if (input.includes('menu')) {
 
     } else if(split_data[1] =='n'){
       res.MenuPreOrdered = false;
-      sendData(req.body.From, "Your options is saved. WE will see you here.")
+      sendData(req.body.From, "Your options is saved. We will see you here.")
 
     }
 
       console.log(res.MenuPreOrdered);
 
 
-  customer.findOneAndUpdate({customerNo:res.customerNo}, res, {new: true},function(err,res){
+  customer.findOneAndUpdate({customerNo:res.customerNo}, {$set:{MenuPreOrdered:res.MenuPreOrdered}}, {upsert: true},function(err,res){
           if(err)
             console.log(err)
           else {

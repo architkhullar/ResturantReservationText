@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <% include partials/scripts.ejs %>
+    <title>Menu</title>
+    <script>
+    $(document).ready(function() {
+    var table = $('#example').DataTable( {
+        // "ajax": "data/arrays.txt",
+        "columnDefs": [ {
+            "targets": -1,
+            "data": null,
+            "defaultContent": "<button>Click to Edit!</button>"
+        } ]
+    } );
+
+    $('#example tbody').on( 'click', 'button', function () {
+        var data = table.row( $(this).parents('tr') ).data();
+        // alert( data[0] );
+        addTable(data);
+    } );
+  } );
+
+  function addTable(data) {
+  var myTableDiv = document.getElementById("myDynamicTable");
+
+  var f = document.createElement("form");
+  f.setAttribute('method',"post");
+  f.setAttribute('action',"submit.php");
+
+  //create input element
+  var i = document.createElement("input");
+  i.type = "text";
+  i.name = "user_name";
+  i.id = "user_name1";
+  i.value = data[0];
+
+  //create a checkbox
+  var c = document.createElement("input");
+  c.type = "checkbox";
+  c.id = "checkbox1";
+  c.name = "check1";
+
+  //create a button
+  var s = document.createElement("input");
+  s.type = "submit";
+  s.value = "Submit";
+
+  // add all elements to the form
+  f.appendChild(i);
+  f.appendChild(c);
+  f.appendChild(s);
+
+  // add the form inside the body
+  // $("body").append(f);   //using jQuery or
+  // document.getElementsByTagName('body')[0].appendChild(f); //pure javascript
+
+  myTableDiv.appendChild(f);
+  }
+  addTable();
+  </script>
+    <title>Customer Reservations</title>
+  </head>
+  <body>
+    <% include partials/header.ejs %>
+     <div class="container">
+       <table id="example" class="display" style="width:100%">
+           <thead>
+               <tr>
+                   <th>Name</th>
+                   <th>Position</th>
+                   <th>Office</th>
+                   <th>Extn.</th>
+                   <th>Start date</th>
+                   <th>Salary</th>
+               </tr>
+           </thead>
+           <tbody>
+             <tr>
+                 <td>Garrett Winters</td>
+                 <td>Accountant</td>
+                 <td>Tokyo</td>
+                 <td>63</td>
+                 <td>2011/07/25</td>
+                 <td>$170,750</td>
+             </tr>
+             <tr>
+                 <td>Ashton Cox</td>
+                 <td>Junior Technical Author</td>
+                 <td>San Francisco</td>
+                 <td>66</td>
+                 <td>2009/01/12</td>
+                 <td>$86,000</td>
+             </tr>
+           </tbody>
+           <tfoot>
+               <tr>
+                   <th>Name</th>
+                   <th>Position</th>
+                   <th>Office</th>
+                   <th>Extn.</th>
+                   <th>Start date</th>
+                   <th>Salary</th>
+               </tr>
+           </tfoot>
+       </table>
+       <div id="myDynamicTable" ></div>
+    </div>
+  </body>
+  </html>
