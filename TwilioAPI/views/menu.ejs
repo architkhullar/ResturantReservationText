@@ -2,109 +2,177 @@
 <html>
   <head>
     <% include partials/scripts.ejs %>
-    <title>Menu</title>
     <script>
     $(document).ready(function() {
-    var table = $('#example').DataTable( {
-        // "ajax": "data/arrays.txt",
-        "columnDefs": [ {
-            "targets": -1,
-            "data": null,
-            "defaultContent": "<button>Click to Edit!</button>"
-        } ]
-    } );
+    $.ajax({
+      method: "GET",
+      dataType: "json",
+        url: "http://localhost:1337/display_order",
+        success:
+        	function(data) {
+            var table = $('#example').DataTable( {
+              "scrollY" :        "300px",
+              "scrollX" :        "true",
+              "scrollCollapse" : "true",
+              "paging" :         "false",
+              "bAutoWidth" : false,
+              "aaData" : data,
+              dom: 'Bfrtip',
+                "columnDefs": [ {
+                    "targets": null,
+                    "className": "dt-center",
+                    "data": data,
+                    "defaultContent": "-"
+                } ],
+                "columns" : [  {
+        	             data : "_id",
+                       "defaultContent": "-"
+                     }, {
+        	             data : "Starters",
+                       "defaultContent": "-"
+                     }, {
+        	             data : "Drinks",
+                       "defaultContent": "-"
+                     }, {
+        	             data : "Desserts",
+                       "defaultContent": "-"
+                     }, {
+        	             data : "MainCourse",
+                       "defaultContent": "-"
+                     }, {
+        	             data : "GroupNumber",
+                       "defaultContent": "-"
+                     }]
+            } );
+            table.$('tr').click(function () {
+            var data = table.rows(this).data();
+            myFunction(data);
+          });
+        	},
+        error:
+        	function(data) {
+            	alert("Getting all data failed. Please try again");
+        		}
+} );
 
-    $('#example tbody').on( 'click', 'button', function () {
-        var data = table.row( $(this).parents('tr') ).data();
-        // alert( data[0] );
-        addTable(data);
-    } );
-  } );
+function myFunction(data) {
+    document.getElementById("_id").value = checkIfUndefined(data[0]._id);
+    document.getElementById("Starters").value = checkIfUndefined(data[0].Starters);
+    document.getElementById("Drinks").value = checkIfUndefined(data[0].Drinks);
+    document.getElementById("Desserts").value = checkIfUndefined(data[0].Desserts);
+    document.getElementById("MainCourse").value = checkIfUndefined(data[0].MainCourse);
+    document.getElementById("GroupNumber").value = checkIfUndefined(data[0].GroupNumber);
 
-  function addTable(data) {
-  var myTableDiv = document.getElementById("myDynamicTable");
+    document.getElementById("myDynamicTable").style.display = "block";
+}
 
-  var f = document.createElement("form");
-  f.setAttribute('method',"post");
-  f.setAttribute('action',"submit.php");
-
-  //create input element
-  var i = document.createElement("input");
-  i.type = "text";
-  i.name = "user_name";
-  i.id = "user_name1";
-  i.value = data[0];
-
-  //create a checkbox
-  var c = document.createElement("input");
-  c.type = "checkbox";
-  c.id = "checkbox1";
-  c.name = "check1";
-
-  //create a button
-  var s = document.createElement("input");
-  s.type = "submit";
-  s.value = "Submit";
-
-  // add all elements to the form
-  f.appendChild(i);
-  f.appendChild(c);
-  f.appendChild(s);
-
-  // add the form inside the body
-  // $("body").append(f);   //using jQuery or
-  // document.getElementsByTagName('body')[0].appendChild(f); //pure javascript
-
-  myTableDiv.appendChild(f);
+function checkIfUndefined(str){
+  if (typeof str === "undefined"){
+    return 0;
   }
-  addTable();
-  </script>
-    <title>Customer Reservations</title>
+  else{
+    return str;
+  }
+}
+} );
+
+
+</script>
+<script>
+
+function myFunction(form, _id, Starters, Drinks, Desserts, MainCourse, GroupNumber) {
+  $.ajax({
+        method : "POST",
+        data : {
+             _id : $('#_id').val(),
+             Starters : $('#Starters').val(),
+             Drinks : $('#Drinks').val(),
+             Desserts : $('#Desserts').val(),
+             MainCourse : $('#MainCourse').val(),
+             GroupNumber : $('#GroupNumber').val()
+           } ,
+           url : "http://localhost:1337/edit_order",
+
+           success:
+            function(result){
+              if(result.status == 200){
+                alert("Successful");
+              }
+              else{
+                alert("Unsuccessful");
+              }
+            },
+
+            error:
+              function(result){
+                alert("error = " + result.message);
+              }
+            });
+  }
+</script>
+    <title>Menu Items</title>
   </head>
   <body>
     <% include partials/header.ejs %>
      <div class="container">
-       <table id="example" class="display" style="width:100%">
+       <table id="example" class="display"  style="width:100%; white-space: nowrap;">
            <thead>
                <tr>
-                   <th>Name</th>
-                   <th>Position</th>
-                   <th>Office</th>
-                   <th>Extn.</th>
-                   <th>Start date</th>
-                   <th>Salary</th>
+                   <th>_id</th>
+                   <th>Starters</th>
+                   <th>Drinks</th>
+                   <th>Desserts</th>
+                   <th>Main Course</th>
+                   <th>Group Number</th>
                </tr>
            </thead>
-           <tbody>
-             <tr>
-                 <td>Garrett Winters</td>
-                 <td>Accountant</td>
-                 <td>Tokyo</td>
-                 <td>63</td>
-                 <td>2011/07/25</td>
-                 <td>$170,750</td>
-             </tr>
-             <tr>
-                 <td>Ashton Cox</td>
-                 <td>Junior Technical Author</td>
-                 <td>San Francisco</td>
-                 <td>66</td>
-                 <td>2009/01/12</td>
-                 <td>$86,000</td>
-             </tr>
-           </tbody>
-           <tfoot>
-               <tr>
-                   <th>Name</th>
-                   <th>Position</th>
-                   <th>Office</th>
-                   <th>Extn.</th>
-                   <th>Start date</th>
-                   <th>Salary</th>
-               </tr>
-           </tfoot>
        </table>
-       <div id="myDynamicTable" ></div>
+       <div id="myDynamicTable" style= "display: none;" >
+         <h2 class="centerAlign1 textBold">Edit Details</h2>
+         <form class="form-horizontal" action="/edit_order" method="POST">
+           <div class="form-group">
+             <label class="control-label col-sm-2" for="_id">id:</label>
+             <div class="col-sm-10">
+               <input type="text" class="form-control" id="_id" name="_id">
+             </div>
+           </div>
+           <div class="form-group">
+             <label class="control-label col-sm-2" for="Starters">Starters:</label>
+             <div class="col-sm-10">
+               <input type="text" class="form-control" id="Starters" name="Starters">
+             </div>
+           </div>
+           <div class="form-group">
+             <label class="control-label col-sm-2" for="Drinks">Drinks:</label>
+             <div class="col-sm-10">
+               <input type="text" class="form-control" id="Drinks" name="Drinks">
+             </div>
+           </div>
+           <div class="form-group">
+             <label class="control-label col-sm-2" for="Desserts">Desserts:</label>
+             <div class="col-sm-10">
+               <input type="text" class="form-control" id="Desserts" name="Desserts">
+             </div>
+           </div>
+           <div class="form-group">
+             <label class="control-label col-sm-2" for="MainCourse">Main Course:</label>
+             <div class="col-sm-10">
+               <input type="text" class="form-control" id="MainCourse" name="MainCourse">
+             </div>
+           </div>
+           <div class="form-group">
+             <label class="control-label col-sm-2" for="GroupNumber">Group Number:</label>
+             <div class="col-sm-10">
+               <input type="text" class="form-control" id="GroupNumber" name="GroupNumber">
+             </div>
+           </div>
+           <div class="form-group">
+             <div class="col-sm-offset-2 col-sm-10">
+               <button id="submitButton"  type="submit" class="btn btn-default btn-success" value="Submit request" onclick="functionForSubmit(this.form, this._id, this.Starters, this.Drinks, this.Desserts, this.MainCourse, this.GroupNumber);" >Submit</button>
+             </div>
+           </div>
+         </form>
+       </div>
     </div>
   </body>
-  </html>
+</html>

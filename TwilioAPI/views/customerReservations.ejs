@@ -77,10 +77,6 @@
 } );
 
 function myFunction(data) {
-
-  // var timeslotreq = checkIfUndefined(data[0].Timeslotreq);
-
-
     document.getElementById("Alerted").value = checkIfUndefined(data[0].Alerted);
     document.getElementById("SpecialRequests").value = checkIfUndefined(data[0].SpecialRequests);
     document.getElementById("DisabilityAccomodation").value = checkIfUndefined(data[0].DisabilityAccomodation);
@@ -104,40 +100,47 @@ function checkIfUndefined(str){
     return str;
   }
 }
-
-function replacer(key, value) {
-  if ((typeof value === 'undefined')) {
-    return 0;
-  }
-  else{
-    return value;
-  }
-}
-// function yourJsFunction{
-//   location.replace("http://localhost:1337/customerReservations");
-// }
-
 } );
 
 
-  </script>
+</script>
+<script>
 
-  <script>
-  var eventposted=0;
+function myFunction(form, Alerted, SpecialRequests, DisabilityAccomodation, Name, MenuPreOrdered, Friends, ReservationMadeAt, customerNo, Adults, Kids, Timeslotreq) {
+  $.ajax({
+        method : "POST",
+        data : {
+             Alerted : $('#Alerted').val(),
+             SpecialRequests : $('#SpecialRequests').val(),
+             DisabilityAccomodation : $('#DisabilityAccomodation').val(),
+             Name : $('#Name').val(),
+             MenuPreOrdered : $('#MenuPreOrdered').val(),
+             Friends : $('#Friends').val(),
+             ReservationMadeAt : $('#ReservationMadeAt').val(),
+             customerNo : $('#customerNo').val(),
+             Adults : $('#Adults').val(),
+             Kids : $('#Kids').val(),
+             Timeslotreq : $('#Timeslotreq').val()
+           } ,
+           url : "http://localhost:1337/edit_customer",
 
- $(document).ready(function(){
-   $('submitButton').click(function() {
-     window.setInterval(foo, 100);
-   });
- });
+           success:
+            function(result){
+              if(result.status == 200){
+                alert("Successful");
+              }
+              else{
+                alert("Unsuccessful");
+              }
+            },
 
- function foo(){
-   if(($(".form-submission-text").is(':visible')) && (eventposted==0)){
-     window.location = "http://localhost:1337/customerReservations";
-     eventposted=1;
-   }
- }
-  </script>
+            error:
+              function(result){
+                alert("error = " + result.message);
+              }
+            });
+  }
+</script>
     <title>Customer Reservations</title>
   </head>
   <body>
@@ -233,7 +236,7 @@ function replacer(key, value) {
            </div>
            <div class="form-group">
              <div class="col-sm-offset-2 col-sm-10">
-               <button id="submitButton"  type="submit" class="btn btn-default btn-success" value="Submit request">Submit</button>
+               <button id="submitButton"  type="submit" class="btn btn-default btn-success" value="Submit request" onclick="functionForSubmit(this.form, this.Alerted, this.SpecialRequests, this.DisabilityAccomodation, this.Name, this.MenuPreOrdered, this.Friends, this.ReservationMadeAt, this.customerNo, this.Adults, this.Kids, this.Timeslotreq);" >Submit</button>
              </div>
            </div>
          </form>

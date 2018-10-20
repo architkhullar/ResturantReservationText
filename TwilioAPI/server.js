@@ -33,8 +33,8 @@ app.post('/adminLogin', function(req, res, next){
   res.render('dashboard');
 });
 
-app.get('/customerTryingToBook', function(req, res){
-  res.render('customerTryingToBook');
+app.get('/bookings', function(req, res){
+  res.render('bookings');
 });
 
 app.get('/customerReservations', function(req, res){
