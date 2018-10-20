@@ -2,26 +2,24 @@
 <html>
   <head>
     <% include partials/scripts.ejs %>
-    <title>Customer Reservations</title>
     <script>
-
     $(document).ready(function() {
-      // document.getElementById("myDynamicTable").style.visibility = "hidden";
-      // $("#myDynamicTable").hide();
     $.ajax({
       method: "GET",
       dataType: "json",
         url: "http://localhost:1337/display_customer",
         success:
         	function(data) {
-            // console.log("data" + JSON.stringify(data));
-            // alert("data found " + data);
             var table = $('#example').DataTable( {
+              "scrollY" :        "300px",
+              "scrollX" :        "true",
+              "scrollCollapse" : "true",
+              "paging" :         "false",
               "bAutoWidth" : false,
               "aaData" : data,
               dom: 'Bfrtip',
                 "columnDefs": [ {
-                    "targets": -1,
+                    "targets": null,
                     "className": "dt-center",
                     "data": data,
                     "defaultContent": "-"
@@ -65,34 +63,18 @@
                      }, {
         	             data : "Timeslotreq",
                        "defaultContent": "-"
-                     }, {
-                       "data": null,
-                       "defaultContent": "<button>Edit</button>"
                      } ]
             } );
             table.$('tr').click(function () {
-            // $(this).toggleClass('selected');
             var data = table.rows(this).data();
-            // GetSelectedRow();
             myFunction(data);
           });
         	},
         error:
         	function(data) {
             	alert("Getting all data failed. Please try again");
-        		// location.href = "newPatient.jsp";
-            }
+        		}
 } );
-
-
-
-function GetSelectedRow() {
-  var table = $('#example').DataTable();
-  var data = table.rows(['.selected']).data().toArray();
-  var notInJson = JSON.stringify( data );
-  // addTable(data);
-  myFunction(data);
-}
 
 function myFunction(data) {
     document.getElementById("Alerted").value = JSON.stringify(data[0].Alerted, replacer);
@@ -101,15 +83,11 @@ function myFunction(data) {
     document.getElementById("Name").value = JSON.stringify(data[0].Name, replacer);
     document.getElementById("MenuPreOrdered").value = JSON.stringify(data[0].MenuPreOrdered, replacer);
     document.getElementById("Friends").value = JSON.stringify(data[0].Friends, replacer);
-    document.getElementById("_id").value = JSON.stringify(data[0]._id, replacer);
     document.getElementById("ReservationMadeAt").value = JSON.stringify(data[0].ReservationMadeAt, replacer);
     document.getElementById("customerNo").value = JSON.stringify(data[0].customerNo, replacer);
-    document.getElementById("__v").value = JSON.stringify(data[0].__v, replacer);
     document.getElementById("Adults").value = JSON.stringify(data[0].Adults, replacer);
     document.getElementById("Kids").value = JSON.stringify(data[0].Kids, replacer);
     document.getElementById("Timeslotreq").value = JSON.stringify(data[0].Timeslotreq, replacer);
-    // $("#myDynamicTable").toggleClass('show');
-    // $("#myDynamicTable").toggleClass("hidden");
 
     document.getElementById("myDynamicTable").style.display = "block";
 }
@@ -130,7 +108,7 @@ function replacer(key, value) {
   <body>
     <% include partials/header.ejs %>
      <div class="container">
-       <table id="example" class="display">
+       <table id="example" class="display"  style="width:100%; white-space: nowrap;">
            <thead>
                <tr>
                    <th>Alerted</th>
@@ -146,13 +124,12 @@ function replacer(key, value) {
                    <th>Adults</th>
                    <th>Kids</th>
                    <th>Time slot req</th>
-                   <th>Edit</th>
                </tr>
            </thead>
        </table>
        <div id="myDynamicTable" style= "display: none;" >
          <h2>Edit Details</h2>
-         <form class="form-horizontal" action="#" method="POST">
+         <form class="form-horizontal" action="/edit_customer" method="POST">
              <table>
                  <tr>
                      <td>
@@ -201,14 +178,6 @@ function replacer(key, value) {
                  </tr>
                  <tr>
                      <td>
-                         <label>_id:</label>
-                     </td>
-                     <td>
-                         <input id="_id" type="text" name="_id" size="40" />
-                     </td>
-                 </tr>
-                 <tr>
-                     <td>
                          <label>Reservation Made At:</label>
                      </td>
                      <td>
@@ -221,14 +190,6 @@ function replacer(key, value) {
                      </td>
                      <td>
                          <input id="customerNo" type="text" name="customerNo" size="40" />
-                     </td>
-                 </tr>
-                 <tr>
-                     <td>
-                         <label>__v:</label>
-                     </td>
-                     <td>
-                         <input id="__v" type="text" name="__v" size="40" />
                      </td>
                  </tr>
                  <tr>
