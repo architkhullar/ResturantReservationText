@@ -4,120 +4,261 @@
     <% include partials/scripts.ejs %>
     <title>Customer Reservations</title>
     <script>
-    $(document).ready(function() {
-    var table = $('#example').DataTable( {
-        // "ajax": "data/arrays.txt",
-    //     dataType:"json"
-    //     method: "GET",
-    // dataType: "json",
-    //     url: "http://localhost:1337/display_customer",
-    //     success:
-    //     	function(data) {
-    //        			getSurveyData(data);
-    //     	},
-    //     error:
-    //     	function(data) {
-    //         	window.alert("Getting all data failed. Please try again");
-    //     		location.href = "newPatient.jsp";
-    //         }
-        "columnDefs": [ {
-            "targets": -1,
-            "data": null,
-            "defaultContent": "<button>Click to Edit!</button>"
-        } ]
-    } );
 
-    $('#example tbody').on( 'click', 'button', function () {
-        var data = table.row( $(this).parents('tr') ).data();
-        // alert( data[0] );
-        addTable(data);
-    } );
+    $(document).ready(function() {
+      // document.getElementById("myDynamicTable").style.visibility = "hidden";
+      // $("#myDynamicTable").hide();
+    $.ajax({
+      method: "GET",
+      dataType: "json",
+        url: "http://localhost:1337/display_customer",
+        success:
+        	function(data) {
+            // console.log("data" + JSON.stringify(data));
+            // alert("data found " + data);
+            var table = $('#example').DataTable( {
+              "bAutoWidth" : false,
+              "aaData" : data,
+              dom: 'Bfrtip',
+                "columnDefs": [ {
+                    "targets": -1,
+                    "className": "dt-center",
+                    "data": data,
+                    "defaultContent": "-"
+                } ],
+                "columns" : [  {
+        	             data : "Alerted",
+                       "defaultContent": "-"
+                     }, {
+        	             data : "SpecialRequests",
+                       "defaultContent": "-"
+                     }, {
+        	             data : "DisabilityAccomodation",
+                       "defaultContent": "-"
+                     }, {
+        	             data : "Name",
+                       "defaultContent": "-"
+                     }, {
+        	             data : "MenuPreOrdered",
+                       "defaultContent": "-"
+                     }, {
+        	             data : "Friends",
+                       "defaultContent": "-"
+                     }, {
+        	             data : "_id",
+                       "defaultContent": "-"
+                     }, {
+        	             data : "ReservationMadeAt",
+                       "defaultContent": "-"
+                     }, {
+        	             data : "customerNo",
+                       "defaultContent": "-"
+                     }, {
+        	             data : "__v",
+                       "defaultContent": "-"
+                     }, {
+        	             data : "Adults",
+                       "defaultContent": "-"
+                     }, {
+        	             "data" : "Kids",
+                       "defaultContent": "-"
+                     }, {
+        	             data : "Timeslotreq",
+                       "defaultContent": "-"
+                     }, {
+                       "data": null,
+                       "defaultContent": "<button>Edit</button>"
+                     } ]
+            } );
+            table.$('tr').click(function () {
+            // $(this).toggleClass('selected');
+            var data = table.rows(this).data();
+            // GetSelectedRow();
+            myFunction(data);
+          });
+        	},
+        error:
+        	function(data) {
+            	alert("Getting all data failed. Please try again");
+        		// location.href = "newPatient.jsp";
+            }
 } );
 
-function addTable(data) {
-  var myTableDiv = document.getElementById("myDynamicTable");
 
-  var f = document.createElement("form");
-  f.setAttribute('method',"post");
-  f.setAttribute('action',"submit.php");
 
-  //create input element
-  var i = document.createElement("input");
-  i.type = "text";
-  i.name = "user_name";
-  i.id = "user_name1";
-  i.value = data[0];
-
-  //create a checkbox
-  var c = document.createElement("input");
-  c.type = "checkbox";
-  c.id = "checkbox1";
-  c.name = "check1";
-
-  //create a button
-  var s = document.createElement("input");
-  s.type = "submit";
-  s.value = "Submit";
-
-  // add all elements to the form
-  f.appendChild(i);
-  f.appendChild(c);
-  f.appendChild(s);
-
-  // add the form inside the body
-  // $("body").append(f);   //using jQuery or
-  // document.getElementsByTagName('body')[0].appendChild(f); //pure javascript
-
-  myTableDiv.appendChild(f);
+function GetSelectedRow() {
+  var table = $('#example').DataTable();
+  var data = table.rows(['.selected']).data().toArray();
+  var notInJson = JSON.stringify( data );
+  // addTable(data);
+  myFunction(data);
 }
-addTable();
+
+function myFunction(data) {
+    document.getElementById("Alerted").value = JSON.stringify(data[0].Alerted, replacer);
+    document.getElementById("SpecialRequests").value = JSON.stringify(data[0].SpecialRequests, replacer);
+    document.getElementById("DisabilityAccomodation").value = JSON.stringify(data[0].DisabilityAccomodation, replacer);
+    document.getElementById("Name").value = JSON.stringify(data[0].Name, replacer);
+    document.getElementById("MenuPreOrdered").value = JSON.stringify(data[0].MenuPreOrdered, replacer);
+    document.getElementById("Friends").value = JSON.stringify(data[0].Friends, replacer);
+    document.getElementById("_id").value = JSON.stringify(data[0]._id, replacer);
+    document.getElementById("ReservationMadeAt").value = JSON.stringify(data[0].ReservationMadeAt, replacer);
+    document.getElementById("customerNo").value = JSON.stringify(data[0].customerNo, replacer);
+    document.getElementById("__v").value = JSON.stringify(data[0].__v, replacer);
+    document.getElementById("Adults").value = JSON.stringify(data[0].Adults, replacer);
+    document.getElementById("Kids").value = JSON.stringify(data[0].Kids, replacer);
+    document.getElementById("Timeslotreq").value = JSON.stringify(data[0].Timeslotreq, replacer);
+    // $("#myDynamicTable").toggleClass('show');
+    // $("#myDynamicTable").toggleClass("hidden");
+
+    document.getElementById("myDynamicTable").style.display = "block";
+}
+
+function replacer(key, value) {
+  if ((typeof value === 'undefined')) {
+    return 0;
+  }
+  else{
+    return value;
+  }
+}
+} );
+
   </script>
     <title>Customer Reservations</title>
   </head>
   <body>
     <% include partials/header.ejs %>
      <div class="container">
-       <table id="example" class="display" style="width:100%">
+       <table id="example" class="display">
            <thead>
                <tr>
+                   <th>Alerted</th>
+                   <th>Special Requests</th>
+                   <th>Disability Accomodation</th>
                    <th>Name</th>
-                   <th>Position</th>
-                   <th>Office</th>
-                   <th>Extn.</th>
-                   <th>Start date</th>
-                   <th>Salary</th>
+                   <th>Menu Pre-Ordered</th>
+                   <th>Friends</th>
+                   <th>_id</th>
+                   <th>Reservation Made At</th>
+                   <th>customer No</th>
+                   <th>__v</th>
+                   <th>Adults</th>
+                   <th>Kids</th>
+                   <th>Time slot req</th>
+                   <th>Edit</th>
                </tr>
            </thead>
-           <tbody>
-             <tr>
-                 <td>Garrett Winters</td>
-                 <td>Accountant</td>
-                 <td>Tokyo</td>
-                 <td>63</td>
-                 <td>2011/07/25</td>
-                 <td>$170,750</td>
-             </tr>
-             <tr>
-                 <td>Ashton Cox</td>
-                 <td>Junior Technical Author</td>
-                 <td>San Francisco</td>
-                 <td>66</td>
-                 <td>2009/01/12</td>
-                 <td>$86,000</td>
-             </tr>
-           </tbody>
-           <tfoot>
-               <tr>
-                   <th>Name</th>
-                   <th>Position</th>
-                   <th>Office</th>
-                   <th>Extn.</th>
-                   <th>Start date</th>
-                   <th>Salary</th>
-               </tr>
-           </tfoot>
        </table>
-       <div id="myDynamicTable" ></div>
+       <div id="myDynamicTable" style= "display: none;" >
+         <h2>Edit Details</h2>
+         <form class="form-horizontal" action="#" method="POST">
+             <table>
+                 <tr>
+                     <td>
+                         <label>Alerted:</label></td>
+                     <td>
+                         <input id="Alerted" type="text" name="Alerted" size="40" />
+                     </td>
+                 </tr>
+                 <tr>
+                     <td>
+                         <label>Special Requests:</label></td>
+                     <td>
+                        <input id="SpecialRequests" type="text" name="SpecialRequests" size="40" />
+                     </td>
+                 </tr>
+                 <tr>
+                     <td>
+                         <label>Disability Accomodation:</label></td>
+                     <td>
+                         <input id="DisabilityAccomodation" type="text" name="DisabilityAccomodation" size="40" />
+                     </td>
+                 </tr>
+                 <tr>
+                     <td>
+                         <label>Name:</label>
+                     </td>
+                     <td>
+                         <input id="Name" type="text" name="Name" size="40" />
+                     </td>
+                 </tr>
+                 <tr>
+                     <td>
+                         <label>Menu Pre-Ordered:</label>
+                     </td>
+                     <td>
+                         <input id="MenuPreOrdered" type="text" name="MenuPreOrdered" size="40" />
+                     </td>
+                 </tr>
+                 <tr>
+                     <td>
+                         <label>Friends:</label>
+                     </td>
+                     <td>
+                         <input id="Friends" type="text" name="Friends" size="40" />
+                     </td>
+                 </tr>
+                 <tr>
+                     <td>
+                         <label>_id:</label>
+                     </td>
+                     <td>
+                         <input id="_id" type="text" name="_id" size="40" />
+                     </td>
+                 </tr>
+                 <tr>
+                     <td>
+                         <label>Reservation Made At:</label>
+                     </td>
+                     <td>
+                         <input id="ReservationMadeAt" type="text" name="ReservationMadeAt" size="40" />
+                     </td>
+                 </tr>
+                 <tr>
+                     <td>
+                         <label>customer No:</label>
+                     </td>
+                     <td>
+                         <input id="customerNo" type="text" name="customerNo" size="40" />
+                     </td>
+                 </tr>
+                 <tr>
+                     <td>
+                         <label>__v:</label>
+                     </td>
+                     <td>
+                         <input id="__v" type="text" name="__v" size="40" />
+                     </td>
+                 </tr>
+                 <tr>
+                     <td>
+                         <label>ProgrAdults:</label>
+                     </td>
+                     <td>
+                         <input id="Adults" type="text" name="Adults" size="40" />
+                     </td>
+                 </tr>
+                 <tr>
+                     <td>
+                         <label>Kids:</label>
+                     </td>
+                     <td>
+                         <input id="Kids" type="text" name="Kids" size="40" />
+                     </td>
+                 </tr>
+                 <tr>
+                     <td>
+                         <label>Time slot req:</label>
+                     </td>
+                     <td>
+                         <input id="Timeslotreq" type="text" name="Timeslotreq" size="40" />
+                     </td>
+                 </tr>
+             </table>
+             <input type="submit"/>
+         </form>
+       </div>
     </div>
   </body>
 </html>
