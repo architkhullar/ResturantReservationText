@@ -128,8 +128,81 @@ function replacer(key, value) {
            </thead>
        </table>
        <div id="myDynamicTable" style= "display: none;" >
-         <h2>Edit Details</h2>
-         <form class="form-horizontal" action="/edit_customer" method="POST">
+         <h2 class="centerAlign1 textBold">Edit Details</h2>
+         <form class="form-horizontal" action="#" method="POST">
+           <div class="form-group">
+             <label class="control-label col-sm-2" for="Alerted">Alerted:</label>
+             <div class="col-sm-10">
+               <input type="text" class="form-control" id="Alerted" name="Alerted">
+             </div>
+           </div>
+           <div class="form-group">
+             <label class="control-label col-sm-2" for="SpecialRequests">Special Requests:</label>
+             <div class="col-sm-10">
+               <input type="text" class="form-control" id="SpecialRequests" name="SpecialRequests">
+             </div>
+           </div>
+           <div class="form-group">
+             <label class="control-label col-sm-2" for="DisabilityAccomodation">Disability Accomodation:</label>
+             <div class="col-sm-10">
+               <input type="text" class="form-control" id="DisabilityAccomodation" name="DisabilityAccomodation">
+             </div>
+           </div>
+           <div class="form-group">
+             <label class="control-label col-sm-2" for="Name">Name:</label>
+             <div class="col-sm-10">
+               <input type="text" class="form-control" id="Name" name="Name">
+             </div>
+           </div>
+           <div class="form-group">
+             <label class="control-label col-sm-2" for="MenuPreOrdered">Menu Pre Ordered:</label>
+             <div class="col-sm-10">
+               <input type="text" class="form-control" id="MenuPreOrdered" name="MenuPreOrdered">
+             </div>
+           </div>
+           <div class="form-group">
+             <label class="control-label col-sm-2" for="Friends">Friends:</label>
+             <div class="col-sm-10">
+               <input type="text" class="form-control" id="Friends" name="Friends">
+             </div>
+           </div>
+           <div class="form-group">
+             <label class="control-label col-sm-2" for="ReservationMadeAt">Reservation Made At:</label>
+             <div class="col-sm-10">
+               <input type="text" class="form-control" id="ReservationMadeAt" name="ReservationMadeAt">
+             </div>
+           </div>
+           <div class="form-group">
+             <label class="control-label col-sm-2" for="customerNo">customer No:</label>
+             <div class="col-sm-10">
+               <input type="text" class="form-control" id="customerNo" name="customerNo">
+             </div>
+           </div>
+           <div class="form-group">
+             <label class="control-label col-sm-2" for="Adults">Adults:</label>
+             <div class="col-sm-10">
+               <input type="text" class="form-control" id="Adults" name="Adults">
+             </div>
+           </div>
+           <div class="form-group">
+             <label class="control-label col-sm-2" for="Kids">Kids:</label>
+             <div class="col-sm-10">
+               <input type="text" class="form-control" id="Kids" name="Kids">
+             </div>
+           </div>
+           <div class="form-group">
+             <label class="control-label col-sm-2" for="Timeslotreq">Time slot req:</label>
+             <div class="col-sm-10">
+               <input type="text" class="form-control" id="Timeslotreq" name="Timeslotreq">
+             </div>
+           </div>
+           <div class="form-group">
+             <div class="col-sm-offset-2 col-sm-10">
+               <button type="submit" class="btn btn-default btn-success">Submit</button>
+             </div>
+           </div>
+         </form>
+         <!-- <form class="form-horizontal" action="/edit_customer" method="POST">
              <table>
                  <tr>
                      <td>
@@ -218,7 +291,7 @@ function replacer(key, value) {
                  </tr>
              </table>
              <input type="submit"/>
-         </form>
+         </form> -->
        </div>
     </div>
   </body>
