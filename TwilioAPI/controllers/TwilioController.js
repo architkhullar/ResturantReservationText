@@ -84,7 +84,7 @@ exports.edit_customer = function(req,res){
 
 exports.edit_order = function(req,res){
   //var newEntry = new order(req.body);
-  customer.findOneAndUpdate({customerNo:req.body.customerNo}, {$set:req.body}, {upsert: true},function(err,task){
+  customer.findOneAndUpdate({customerNo:req.body.GroupNumber}, {$set:req.body}, {upsert: true},function(err,task){
     if(task)
       res.json(task);
     else {

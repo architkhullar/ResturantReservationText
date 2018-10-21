@@ -7,7 +7,7 @@
     $.ajax({
       method: "GET",
       dataType: "json",
-        url: "http://localhost:1337/display_customer",
+        url: "/display_customer",
         success:
         	function(data) {
             var table = $('#example').DataTable( {
@@ -108,54 +108,13 @@ $("#editDetailsForm").on('submit', function(e) {
         url : $(this).prop('action'),
         data: $(this).serialize()
     }).done(function() {
-        // alert("ajax called");
-        // redirect("http://localhost:1337/customerReservations");
-        window.location.href = "http://localhost:1337/customerReservations";
+        window.location.href = "/customerReservations";
     });
 });
 } );
 
 
 </script>
-<!-- <script>
-
-function myFunction(form, Alerted, SpecialRequests, DisabilityAccomodation, Name, MenuPreOrdered, Friends, ReservationMadeAt, customerNo, Adults, Kids, Timeslotreq) {
-  alert("func used");
-
-  $.ajax({
-        method : "POST",
-        data : {
-             Alerted : $('#Alerted').val(),
-             SpecialRequests : $('#SpecialRequests').val(),
-             DisabilityAccomodation : $('#DisabilityAccomodation').val(),
-             Name : $('#Name').val(),
-             MenuPreOrdered : $('#MenuPreOrdered').val(),
-             Friends : $('#Friends').val(),
-             ReservationMadeAt : $('#ReservationMadeAt').val(),
-             customerNo : $('#customerNo').val(),
-             Adults : $('#Adults').val(),
-             Kids : $('#Kids').val(),
-             Timeslotreq : $('#Timeslotreq').val()
-           } ,
-           url : "http://localhost:1337/edit_customer",
-
-           success:
-            function(result){
-              if(result.status == 200){
-                alert("Successful");
-              }
-              else{
-                alert("Unsuccessful");
-              }
-            },
-
-            error:
-              function(result){
-                alert("error = " + result.message);
-              }
-            });
-  }
-</script> -->
     <title>Customer Reservations</title>
   </head>
   <body>

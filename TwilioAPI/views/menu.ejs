@@ -7,7 +7,7 @@
     $.ajax({
       method: "GET",
       dataType: "json",
-        url: "http://localhost:1337/display_order",
+        url: "/display_order",
         success:
         	function(data) {
             var table = $('#example').DataTable( {
@@ -56,7 +56,7 @@
 } );
 
 function myFunction(data) {
-    document.getElementById("_id").value = checkIfUndefined(data[0]._id);
+    // document.getElementById("_id").value = checkIfUndefined(data[0]._id);
     document.getElementById("Starters").value = checkIfUndefined(data[0].Starters);
     document.getElementById("Drinks").value = checkIfUndefined(data[0].Drinks);
     document.getElementById("Desserts").value = checkIfUndefined(data[0].Desserts);
@@ -74,43 +74,22 @@ function checkIfUndefined(str){
     return str;
   }
 }
+
+$("#editDetailsForm").on('submit', function(e) {
+    e.preventDefault();
+    $.ajax({
+        type: $(this).prop('method'),
+        url : $(this).prop('action'),
+        data: $(this).serialize()
+    }).done(function() {
+        window.location.href = "/menu";
+    });
+});
 } );
 
 
 </script>
-<script>
-
-function myFunction(form, _id, Starters, Drinks, Desserts, MainCourse, GroupNumber) {
-  $.ajax({
-        method : "POST",
-        data : {
-             _id : $('#_id').val(),
-             Starters : $('#Starters').val(),
-             Drinks : $('#Drinks').val(),
-             Desserts : $('#Desserts').val(),
-             MainCourse : $('#MainCourse').val(),
-             GroupNumber : $('#GroupNumber').val()
-           } ,
-           url : "http://localhost:1337/edit_order",
-
-           success:
-            function(result){
-              if(result.status == 200){
-                alert("Successful");
-              }
-              else{
-                alert("Unsuccessful");
-              }
-            },
-
-            error:
-              function(result){
-                alert("error = " + result.message);
-              }
-            });
-  }
-</script>
-    <title>Menu Items</title>
+  <title>Menu Items</title>
   </head>
   <body>
     <% include partials/header.ejs %>
@@ -129,13 +108,7 @@ function myFunction(form, _id, Starters, Drinks, Desserts, MainCourse, GroupNumb
        </table>
        <div id="myDynamicTable" style= "display: none;" >
          <h2 class="centerAlign1 textBold">Edit Details</h2>
-         <form class="form-horizontal" action="/edit_order" method="POST">
-           <div class="form-group">
-             <label class="control-label col-sm-2" for="_id">id:</label>
-             <div class="col-sm-10">
-               <input type="text" class="form-control" id="_id" name="_id">
-             </div>
-           </div>
+         <form class="form-horizontal" id="editDetailsForm" action="/edit_order" method="POST">
            <div class="form-group">
              <label class="control-label col-sm-2" for="Starters">Starters:</label>
              <div class="col-sm-10">
@@ -163,7 +136,7 @@ function myFunction(form, _id, Starters, Drinks, Desserts, MainCourse, GroupNumb
            <div class="form-group">
              <label class="control-label col-sm-2" for="GroupNumber">Group Number:</label>
              <div class="col-sm-10">
-               <input type="text" class="form-control" id="GroupNumber" name="GroupNumber">
+               <input type="text" class="form-control" id="GroupNumber" name="GroupNumber" readonly>
              </div>
            </div>
            <div class="form-group">
