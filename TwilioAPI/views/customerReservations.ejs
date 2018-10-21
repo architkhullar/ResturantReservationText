@@ -100,13 +100,28 @@ function checkIfUndefined(str){
     return str;
   }
 }
+
+$("#editDetailsForm").on('submit', function(e) {
+    e.preventDefault();
+    $.ajax({
+        type: $(this).prop('method'),
+        url : $(this).prop('action'),
+        data: $(this).serialize()
+    }).done(function() {
+        // alert("ajax called");
+        // redirect("http://localhost:1337/customerReservations");
+        window.location.href = "http://localhost:1337/customerReservations";
+    });
+});
 } );
 
 
 </script>
-<script>
+<!-- <script>
 
 function myFunction(form, Alerted, SpecialRequests, DisabilityAccomodation, Name, MenuPreOrdered, Friends, ReservationMadeAt, customerNo, Adults, Kids, Timeslotreq) {
+  alert("func used");
+
   $.ajax({
         method : "POST",
         data : {
@@ -140,7 +155,7 @@ function myFunction(form, Alerted, SpecialRequests, DisabilityAccomodation, Name
               }
             });
   }
-</script>
+</script> -->
     <title>Customer Reservations</title>
   </head>
   <body>
@@ -167,7 +182,7 @@ function myFunction(form, Alerted, SpecialRequests, DisabilityAccomodation, Name
        </table>
        <div id="myDynamicTable" style= "display: none;" >
          <h2 class="centerAlign1 textBold">Edit Details</h2>
-         <form class="form-horizontal" action="/edit_customer" method="POST">
+         <form class="form-horizontal" id="editDetailsForm" action="/edit_customer" method="POST">
            <div class="form-group">
              <label class="control-label col-sm-2" for="Alerted">Alerted:</label>
              <div class="col-sm-10">
@@ -236,7 +251,7 @@ function myFunction(form, Alerted, SpecialRequests, DisabilityAccomodation, Name
            </div>
            <div class="form-group">
              <div class="col-sm-offset-2 col-sm-10">
-               <button id="submitButton"  type="submit" class="btn btn-default btn-success" value="Submit request" onclick="functionForSubmit(this.form, this.Alerted, this.SpecialRequests, this.DisabilityAccomodation, this.Name, this.MenuPreOrdered, this.Friends, this.ReservationMadeAt, this.customerNo, this.Adults, this.Kids, this.Timeslotreq);" >Submit</button>
+               <button id="submitButton"  type="submit" class="btn btn-default btn-success" value="Submit request">Submit</button>
              </div>
            </div>
          </form>
