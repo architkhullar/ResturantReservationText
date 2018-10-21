@@ -10,6 +10,9 @@ const order = require('./model/OrderModel');
 const customer = require('./model/Customermodel');
 const bookings = require('./model/Bookingmodel');
 const admin = require('./model/AdminModel');
+var cookieParser = require('cookie-parser');
+var session = require('express-session');
+var auth = require('./auth.js');
 const app = express();
 
 //var Task = mongoose.model('inclass03');
@@ -19,7 +22,8 @@ mongoose.Promise = global.Promise;
 mongoose.connect('mongodb+srv://aMad:12019@cluster0-axmyu.mongodb.net/test?retryWrites=true');
 
 app.set('view engine', 'ejs');
-
+var urlencodedParser = bodyParser.urlencoded({ extended: false });
+app.use(session({ secret: 'this-is-a-secret-token', cookie: { maxAge: 60000 }}));
 
 //sunidhi;switch
 
@@ -29,20 +33,28 @@ app.get('/', function(req, res){
   res.render('index.ejs');
 });
 
-app.post('/adminLogin', function(req, res, next){
+app.get('/adminLogin', urlencodedParser, function(req, res, next){
+  var username = "admin1";
+  req.session.admin = username;
   res.render('dashboard');
 });
 
-app.get('/bookings', function(req, res){
+app.get('/bookings', auth.sessionChecker, function(req, res){
   res.render('bookings');
 });
 
-app.get('/customerReservations', function(req, res){
-  res.render('customerReservations');
+app.get('/customerReservations', auth.sessionChecker, function(req, res, next){
+    res.render('customerReservations');
 });
 
-app.get('/menu', function(req, res){
+app.get('/menu', auth.sessionChecker, function(req, res){
   res.render('menu');
+});
+
+app.get('/logout', function(req, res){
+  req.session.admin= null;
+  // res.render('index');
+  res.redirect('/');
 });
 // end of sunidhi's
 
