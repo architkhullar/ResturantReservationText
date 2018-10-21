@@ -13,11 +13,11 @@
           success:
              	function(result) {
                  	if(result.status==200){
-                			alert(result.message);
+                			// alert(result.message);
                 			window.location.href = "http://localhost:1337/adminLogin"
                  	}
                  	else{
-                 		alert(result.message);
+                 		// alert(result.message);
                  	}
              	},
              error:
@@ -31,7 +31,7 @@
 </script>
   </head>
   <body>
-    <% include partials/header.ejs %>
+    <% include partials/headerForLogin.ejs %>
     <div class="container">
       <h2 class="margin20">Administrator Login</h2>
       <form id="adminLoginForm" class="form-horizontal" method="post" action="/admin_login">
